@@ -18,5 +18,9 @@
  * @package    propel.generator.lib.model
  */
 class Sfoauthserverrequesttoken extends BaseSfoauthserverrequesttoken {
+	public function getConsumer()
+	{
+		return SfoauthserverconsumerQuery::create()->findOneById($this->consumer_id);
+	}
 
 } // Sfoauthserverrequesttoken

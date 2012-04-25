@@ -19,4 +19,8 @@
  */
 class SfoauthserveraccesstokenQuery extends BaseSfoauthserveraccesstokenQuery {
 
+	public function getConsumer()
+	{
+		return SfoauthserverconsumerQuery::create()->findOneById($this->consumer_id);
+	}
 } // SfoauthserveraccesstokenQuery

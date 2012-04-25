@@ -26,9 +26,9 @@ class SfoauthserveruserscopeQuery extends BaseSfoauthserveruserscopeQuery {
    */
   public function authorizeApplication($consumerId,$userId,$scope)
   {
-    $userScope = $this->where('consumer_id = ?' ,$consumerId)
-      ->andWhere('user_id = ?',$userId)
-      ->fetchOne();
+    $userScope = $this->where('Sfoauthserveruserscope.ConsumerId = ?' ,$consumerId)
+      ->where('Sfoauthserveruserscope.UserId = ?',$userId)
+      ->findOne();
     if (!$userScope){
       $userScope = new sfOauthServerUserScope();
       $userScope->setConsumerId($consumerId);
@@ -50,9 +50,9 @@ class SfoauthserveruserscopeQuery extends BaseSfoauthserveruserscopeQuery {
 	 if (!$scope) // If an application has no permission, it is automatically authorized
 		return true;
 
-    $userScope = $this->where('consumer_id = ?' ,$consumerId)
-      ->andWhere('user_id = ?',$userId)
-      ->fetchOne();
+    $userScope = $this->where('Sfoauthserveruserscope.ConsumerId = ?' ,$consumerId)
+      ->where('Sfoauthserveruserscope.UserId = ?',$userId)
+      ->findOne();
     if(!$userScope)
       return false;
     $permissions = explode($userScope->getScope(),' ');
@@ -67,7 +67,7 @@ class SfoauthserveruserscopeQuery extends BaseSfoauthserveruserscopeQuery {
 
   public function getApplicationsOf($userId)
   {
-    $q = $this->createQuery('a')->where('a.user_id = ?',$userId)->leftJoin('a.Consumer')->execute();
+    $q = $this->where('Sfoauthserveruserscope.UserId = ?',$userId)->leftJoin('Consumer')->execute();
     return $q;
   }
 } // SfoauthserveruserscopeQuery

@@ -18,7 +18,7 @@
  * @package    propel.generator.lib.model
  */
 class Sfoauthserveruserscope extends BaseSfoauthserveruserscope {
-	public function preDelete($event)
+	public function preDelete(PropelPDO $con = null)
   {
     // We have to delete also the current access tokens and code tokens
     $tokens = sfOauthServerAccessTokenQuery::create()->where('consumer_id = ?',$this->getConsumerId())->andWhere('user_id = ?',$this->getUserId())->execute();

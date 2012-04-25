@@ -8,7 +8,7 @@ class sfOauthApplicationActions extends sfActions
    * */
   public function executeAuthorize(sfWebRequest $request)
   {
-    $user_id = $this->getUser()->getAttribute('user_id', null, 'sfGuardSecurityUser');
+    $user_id = 8; //$this->getUser()->getAttribute('user_id', null, 'sfGuardSecurityUser');
     $client_id = $request->getParameter('client_id'); // OAuth 2.0
     if ($client_id == NULL)
       $client_id = $request->getParameter('oauth_consumer_key', ' ');  // OAuth 1.0
@@ -56,6 +56,11 @@ class sfOauthApplicationActions extends sfActions
       } else if (SfOauthServerUserScopeQuery::create()->isApplicationAuthorized($this->consumer->getId(), $user_id, $this->consumer->getScope()))
         $oauth->finishClientAuthorization(1, array_merge($_GET, array('scope' => $this->consumer->getScope())));
     }
+  }
+
+	public function executeDeauthorize(sfWebRequest $request)
+  {
+
   }
 
   public function executeList(sfWebRequest $request)

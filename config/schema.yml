@@ -1,4 +1,6 @@
 propel:
+  _attributes:      { package: plugins.sfOuathPropelServerPlugin.lib.model }
+
   sfOauthServerConsumer:
     _propel_behaviors:
       timestampable: ~

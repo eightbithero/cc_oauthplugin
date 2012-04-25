@@ -102,7 +102,7 @@ class sfOAuth2Server extends OAuth2 {
 				
 		$authtoken = new sfOauthServerAccessToken();
 		$authtoken->setToken($oauth_token);
-		$authtoken->setConsumer($consumer);
+		$authtoken->setConsumerId($consumer->getId());
 		$authtoken->setExpires($expires);
 		$authtoken->setUserId($this->user_id);
 		$authtoken->setScope($this->scope);
@@ -126,6 +126,10 @@ class sfOAuth2Server extends OAuth2 {
    */
   protected function getAuthCode($code) {
 
+
+	  /**
+	   *  @var $q sfOauthServerRequestTokenQuery
+	   */
 	$q = sfOauthServerRequestTokenQuery::create()->findOneByToken($code);
 	if ($q)
 		{

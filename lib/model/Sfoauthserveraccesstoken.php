@@ -67,4 +67,14 @@ class Sfoauthserveraccesstoken extends BaseSfoauthserveraccesstoken {
     return $test;
 
   }
+
+	public function getConsumer()
+	{
+		return SfoauthserverconsumerQuery::create()->findOneById($this->consumer_id);
+	}
+
+	public function getUser()
+	{
+		return SfGuardUserQuery::create()->findOneById($this->user_id);
+	}
 } // Sfoauthserveraccesstoken

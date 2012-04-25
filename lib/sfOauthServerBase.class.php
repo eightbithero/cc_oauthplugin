@@ -69,7 +69,7 @@ class sfOauthServerBase
 
 
 			 $template = sprintf('error.%s.php', $format);
-			 $path =   dirname(__FILE__).'./../config/error/'.$template;
+			 $path =   dirname(__FILE__).'/../config/error/'.$template;
 			 
 			 $type = get_class($exception);
 			 $message = $exception->getMessage();
