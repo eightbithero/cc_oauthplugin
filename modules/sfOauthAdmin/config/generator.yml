@@ -1,0 +1,27 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           sfOauthServerConsumer
+    theme:                 admin15
+    non_verbose_templates: true
+    with_show:             false
+    singular:              sfOauthServerConsumer
+    plural:                sfOauthServerConsumers
+    route_prefix:          sfoauthserverconsumer
+    with_propel_route:     1
+    actions_base_class:    sfActions
+    css:                   nothing
+
+    config:
+      actions: ~
+      fields:  ~
+      list:
+        title:   Consumer list
+        display: [=name,consumer_key,consumer_secret,number_query, created_at]
+      filter:  ~
+      form:
+        class: sfOauthAdminConsumerForm
+      edit:
+        title: Editing Consumer "%%name%%"
+      new:
+        title: New Consumer

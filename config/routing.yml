@@ -1,0 +1,15 @@
+oauth:
+  url: /oauth/:action.:sf_format/*
+  param: { module: sfOauthAuth }
+  requirements:
+    sf_format: (?:json|xml)
+
+sfOauthAuthorize:
+  url: /application/authorize
+  param: {module: sfOauthApplication, action: authorize}
+
+oauthTest:
+  url: /sfOauthTest/:action.:sf_format/*
+  param: { module: sfOauthTest,sf_format: json}
+
+

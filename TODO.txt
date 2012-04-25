@@ -1,0 +1,5 @@
+* Check the base domain for the callback and redirect_uri
+
+* For desktop application, callback mustn't required. Show a page to notice that application has been accepted.
+
+* Add a list of permission enable in a conf file. Put a multiple input choice in form
