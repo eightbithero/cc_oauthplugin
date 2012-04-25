@@ -1,6 +1,8 @@
-# sfOauthServerPlugin
+# sfOauthPropelServerPlugin
 
 ## Introduction
+
+This is reworked version of plugin.
 
 This plugin permits to create easily an authentication for a module or an action. This authentication works both with OAuth 1.0 and 2.0
 For instance, it allows to secure an API and control access and permissions of each consumers (applications).
@@ -11,7 +13,7 @@ If you find bugs or if you have some suggestions, please contact me.
 
   * Install the plugin (via a package)
 
-        symfony plugin:install sfOauthServerPlugin
+        git clone ... ...
 
   * Activate the plugin in the `config/ProjectConfiguration.class.php`
   
@@ -21,9 +23,9 @@ If you find bugs or if you have some suggestions, please contact me.
           public function setup()
           {
             $this->enablePlugins(array(
-              'sfDoctrinePlugin', 
-              'sfDoctrineGuardPlugin',
-              'sfOauthServerPlugin'
+              'sfPropelPlugin',
+              'sfPropelGuardPlugin',
+              'sfOauthPropelServerPlugin'
             ));
           }
         }
