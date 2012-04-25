@@ -13,7 +13,7 @@ If you find bugs or if you have some suggestions, please contact me.
 
   * Install the plugin (via a package)
 
-        git clone ... ...
+        git submodule add https://github.com/lmaxim/cc_oauthplugin plugins/sfOauthPropelServerPlugin
 
   * Activate the plugin in the `config/ProjectConfiguration.class.php`
   
