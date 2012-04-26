@@ -1,5 +1,5 @@
 propel:
-  _attributes:      { package: plugins.sfOuathPropelServerPlugin.lib.model }
+  _attributes:      { package: plugins.sfOauthPropelServerPlugin.lib.model }
 
   sfOauthServerConsumer:
     _propel_behaviors:
