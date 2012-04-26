@@ -3,15 +3,22 @@
 class sfOauthApplicationActions extends sfActions
 {
 
+
+	protected function getClientId(sfWebRequest $request)
+	{
+		$client_id = $request->getParameter('client_id'); // OAuth 2.0
+		if ($client_id == NULL)
+		  $client_id = $request->getParameter('oauth_consumer_key', ' ');  // OAuth 1.0
+
+		return $client_id;
+	}
   /**
    *  Authorize an Application
    * */
   public function executeAuthorize(sfWebRequest $request)
   {
     $user_id = $this->getUser()->getAttribute('user_id', null, 'sfGuardSecurityUser');
-    $client_id = $request->getParameter('client_id'); // OAuth 2.0
-    if ($client_id == NULL)
-      $client_id = $request->getParameter('oauth_consumer_key', ' ');  // OAuth 1.0
+    $client_id = $this->getClientId($request);
 
     $this->consumer = sfOauthServerConsumerQuery::create()->findOneByConsumerKey($client_id); // Check if the client_id exist
     $this->forward404Unless($this->consumer);
@@ -58,9 +65,18 @@ class sfOauthApplicationActions extends sfActions
     }
   }
 
-	public function executeDeauthorize(sfWebRequest $request)
+  public function executeDeauthorize(sfWebRequest $request)
   {
+	  $oauth_token = $request->getParameter('oauth_token');
 
+	  if ($oauth_token)
+	  {
+		  $nbUpdatedRows = SfoauthserveraccesstokenQuery::create()
+				  ->filterByToken($oauth_token)
+				  ->update(array('Expires' => time()));
+	  }
+
+      return sfView::NONE;
   }
 
   public function executeList(sfWebRequest $request)

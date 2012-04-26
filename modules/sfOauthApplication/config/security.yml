@@ -1,2 +1,5 @@
 all:
   is_secure: true
+
+deauthorize:
+  is_secure: false
