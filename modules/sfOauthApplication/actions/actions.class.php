@@ -8,7 +8,7 @@ class sfOauthApplicationActions extends sfActions
    * */
   public function executeAuthorize(sfWebRequest $request)
   {
-    $user_id = 8; //$this->getUser()->getAttribute('user_id', null, 'sfGuardSecurityUser');
+    $user_id = $this->getUser()->getAttribute('user_id', null, 'sfGuardSecurityUser');
     $client_id = $request->getParameter('client_id'); // OAuth 2.0
     if ($client_id == NULL)
       $client_id = $request->getParameter('oauth_consumer_key', ' ');  // OAuth 1.0
