@@ -208,31 +208,31 @@ class sfOAuth2PersistentServer extends OAuth2 {
     return $code;
   }
 
-  public function finishClientAuthorization($is_authorized, $params = array()) {
-    $state = $response_type = $client_id = $scope = $redirect_uri = NULL;
-
-	$params += array(
-      'scope' => NULL,
-      'state' => NULL,
-    );
-    extract($params);
-
-    if ($state !== NULL)
-      $result["query"]["state"] = $state;
-
-    if ($is_authorized === FALSE) {
-      $result["query"]["error"] = OAUTH2_ERROR_USER_DENIED;
-    }
-    else {
-      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_AUTH_CODE || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
-        $result["query"]["code"] = $this->createAuthCode($client_id, $redirect_uri, $scope);
-
-      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_ACCESS_TOKEN || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
-        $result["fragment"] = $this->createAccessToken($client_id, $scope);
-    }
-
-	return $result;
-  }
+//  public function finishClientAuthorization($is_authorized, $params = array()) {
+//    $state = $response_type = $client_id = $scope = $redirect_uri = NULL;
+//
+//	$params += array(
+//      'scope' => NULL,
+//      'state' => NULL,
+//    );
+//    extract($params);
+//
+//    if ($state !== NULL)
+//      $result["query"]["state"] = $state;
+//
+//    if ($is_authorized === FALSE) {
+//      $result["query"]["error"] = OAUTH2_ERROR_USER_DENIED;
+//    }
+//    else {
+//      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_AUTH_CODE || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
+//        $result["query"]["code"] = $this->createAuthCode($client_id, $redirect_uri, $scope);
+//
+//      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_ACCESS_TOKEN || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
+//        $result["fragment"] = $this->createAccessToken($client_id, $scope);
+//    }
+//
+//	return $result;
+//  }
 
 
   public function authorizeApplication($consumerId, $userId, $scope)
