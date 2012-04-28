@@ -46,10 +46,11 @@ class sfOauthAuthActions extends sfActions
 		}
 		else
 		{
-			$q = sfOauthServerRequestTokenQuery::create()->findOneByToken($request->getParameter('code'));
-			$oauthServer2 = new sfOauth2Server();
-			$oauthServer2->setUserId($q->getUserId());
-			$oauthServer2->grantAccessToken($q->getScope());
+			$oauthServer2 = new sfOAuth2PersistentServer();
+			$q = $oauthServer2->getAuthCodePublic($request->getParameter('code'));
+			#$q = sfOauthServerRequestTokenQuery::create()->findOneByToken($request->getParameter('code'));
+			$oauthServer2->setUserId($q['client_id']);
+			$oauthServer2->grantAccessToken($q['scope']);
 			return sfView::NONE;
 		}
 	}

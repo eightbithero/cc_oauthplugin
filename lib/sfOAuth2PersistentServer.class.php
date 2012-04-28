@@ -12,7 +12,7 @@
 /**
  * Sample OAuth2 Library Mongo DB Implementation.
  */
-require_once(sfConfig::get('sf_plugins_dir').'/sfRediskaPlugin/lib/sfRediska.class.php');
+#require_once(sfConfig::get('sf_plugins_dir').'/sfRediskaPlugin/lib/sfRediska.class.php');
 
 class sfOAuth2PersistentServer extends OAuth2 {
 	private $db;
@@ -96,6 +96,10 @@ class sfOAuth2PersistentServer extends OAuth2 {
     return $this->db->get("tokens:$oauth_token");
   }
 
+	public function getPublicAccessToken($oauth_token) {
+		return $this->getAccessToken($oauth_token);
+	}
+
   /**
    * Implements OAuth2::setAccessToken().
    */
@@ -104,7 +108,7 @@ class sfOAuth2PersistentServer extends OAuth2 {
       "client_id" => $client_id,
       "expires" => $expires,
       "scope" => $scope
-    ));
+    )); //setAndExpire OAUTH2_DEFAULT_ACCESS_TOKEN_LIFETIME
 
 //    $this->db->tokens->insert(array(
 //      "_id" => $oauth_token,
@@ -132,16 +136,28 @@ class sfOAuth2PersistentServer extends OAuth2 {
     return $stored_code !== NULL ? $stored_code : FALSE;
   }
 
+  public function getAuthCodePublic($code)
+  {
+	  return $this->getAuthCode($code);
+  }
+
+
   /**
    * Overrides OAuth2::setAuthCode().
    */
   protected function setAuthCode($code, $client_id, $redirect_uri, $expires, $scope = NULL) {
-	$this->db->set("auth_codes:$code", array(
+	/**
+	 * @var $this->db Rediska
+	 */
+
+	  $expires = OAUTH2_DEFAULT_AUTH_CODE_LIFETIME * 10000;
+
+	$this->db->setAndExpire("auth_codes:$code", array(
       "client_id" => $client_id,
       "redirect_uri" => $redirect_uri,
-      "expires" => $expires,
+      "expires" => time() + $expires,
       "scope" => $scope
-    ));
+    ), $expires);
 
 //    $this->db->auth_codes->insert(array(
 //      "_id" => $code,
@@ -157,5 +173,98 @@ class sfOAuth2PersistentServer extends OAuth2 {
 			$this->user_id = $user_id;
 	}
 
+  public function getConsumer($consumer_key)
+  {
+	$consumer = $this->db->get("consumers:$consumer_key");
+    return $consumer !== NULL ? $consumer : FALSE;
+  }
+
+  public function setConsumer(  $consumer_key,
+								$consumer_secret,
+								$name,
+								$description,
+								$protocole,
+								$base_domain,
+								$callback,
+								$scope,
+								$number_query  )
+  {
+	$this->db->set("consumers:$consumer_key", array(
+      "consumer_key" => $consumer_key,
+      "consumer_secret" => $consumer_secret,
+      "name" => $name,
+      "description" => $description,
+      "protocole" => $protocole,
+      "base_domain" => $base_domain,
+      "callback" => $callback,
+      "scope" => $scope,
+      "number_query" => $number_query
+    ));
+  }
+
+  protected function createAuthCode($client_id, $redirect_uri, $scope = NULL) {
+    $code = $this->genAuthCode();
+    $this->setAuthCode($code, $client_id, $redirect_uri, time() + $this->getVariable('auth_code_lifetime', OAUTH2_DEFAULT_AUTH_CODE_LIFETIME), $scope);
+    return $code;
+  }
+
+  public function finishClientAuthorization($is_authorized, $params = array()) {
+    $state = $response_type = $client_id = $scope = $redirect_uri = NULL;
+
+	$params += array(
+      'scope' => NULL,
+      'state' => NULL,
+    );
+    extract($params);
+
+    if ($state !== NULL)
+      $result["query"]["state"] = $state;
+
+    if ($is_authorized === FALSE) {
+      $result["query"]["error"] = OAUTH2_ERROR_USER_DENIED;
+    }
+    else {
+      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_AUTH_CODE || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
+        $result["query"]["code"] = $this->createAuthCode($client_id, $redirect_uri, $scope);
+
+      if ($response_type == OAUTH2_AUTH_RESPONSE_TYPE_ACCESS_TOKEN || $response_type == OAUTH2_AUTH_RESPONSE_TYPE_CODE_AND_TOKEN)
+        $result["fragment"] = $this->createAccessToken($client_id, $scope);
+    }
+
+	return $result;
+  }
+
+
+  public function authorizeApplication($consumerId, $userId, $scope)
+  {
+	$this->db->set("userscope:$userId:$consumerId", $scope);
+  }
+  /**
+   * Check if an application has already been accepted by an user
+   * @param integer $consumerId
+   * @param integer $userId
+   * @param string $scope
+   * @return boolean
+   */
+  public function isApplicationAuthorized($consumerId,$userId,$scope)
+  {
+
+	 if (!$scope) // If an application has no permission, it is automatically authorized
+		return true;
+
+	$dbscope = $this->db->get("userscope:$userId:$consumerId", $scope);
+
+    if(!$dbscope)
+      return false;
+
+    $permissions = explode($dbscope,' ');
+    $scope = explode($scope,' ');
+
+    if(array_diff($permissions,$scope) == Array() ) //looks like indian code here
+      return true;
+    else
+      return false;
+
+  }
 
 }

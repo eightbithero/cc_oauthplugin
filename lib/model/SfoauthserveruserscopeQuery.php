@@ -47,6 +47,7 @@ class SfoauthserveruserscopeQuery extends BaseSfoauthserveruserscopeQuery {
    */
   public function isApplicationAuthorized($consumerId,$userId,$scope)
   {
+
 	 if (!$scope) // If an application has no permission, it is automatically authorized
 		return true;
 

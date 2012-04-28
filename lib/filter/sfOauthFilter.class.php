@@ -36,7 +36,7 @@ class sfOauthFilter extends sfFilter
 	 }
 	else if ($request->getParameter('oauth_token',NULL)!=NULL) // OAuth 2.0
 	{
-	      $oauth = new sfOauth2Server();
+	      $oauth = new sfOAuth2PersistentServer(); #new sfOauth2Server();
 	      $oauth->verifyAccessToken();
 	}
 	else
@@ -46,11 +46,13 @@ class sfOauthFilter extends sfFilter
 
 	
 	$token = $request->getParameter('access_token',$request->getParameter('oauth_token'));
-	$sfToken = sfOauthServerAccessTokenQuery::create()->findOneByToken($token);
+	$sfToken = new Sfoauthserveraccesstoken();
+	$sfToken->fromArray($oauth->getPublicAccessToken($token));
+			 # sfOauthServerAccessTokenQuery::create()->findOneByToken($token);
 	$user = $sfToken->getUser(); // Select user concerned
 
 	$consumer = $sfToken->getConsumer();
-	$consumer->increaseNumberQuery();
+	#$consumer->increaseNumberQuery();
 	$request->setParameter('sfGuardUser',$user); // save this user in a parameter 'user'
 	$request->setParameter('sfOauthConsumer',$consumer); // save consumer in a parameter 'consumer'
     $credential = $sfoauth->getOauthCredential();

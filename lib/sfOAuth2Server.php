@@ -90,7 +90,11 @@ class sfOAuth2Server extends OAuth2 {
 			return NULL;
  
   }
-  
+
+
+	public function getPublicAccessToken($oauth_token) {
+		return $this->getAccessToken($oauth_token);
+	}
   /**
    * Implements OAuth2::setAccessToken().
    */
