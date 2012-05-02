@@ -8,7 +8,7 @@ sfOauthAuthorize:
   url: /application/authorize
   param: {module: sfOauthApplication, action: authorize}
 
-sfOauthAuthorize:
+sfOauthGetCode:
   url: /application/getCode
   param: {module: sfOauthApplication, action: getCode}
 
