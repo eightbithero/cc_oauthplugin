@@ -20,10 +20,10 @@ $oauth->verifyAccessToken();
 ?>
 
 <html>
-  <head>
-    <title>Hello!</title>
-  </head>
-  <body>
-    <p>This is a secret.</p>
-  </body>
+<head>
+	<title>Hello!</title>
+</head>
+<body>
+<p>This is a secret.</p>
+</body>
 </html>

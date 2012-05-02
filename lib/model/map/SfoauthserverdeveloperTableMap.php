@@ -16,7 +16,7 @@
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
  *
- * @package    propel.generator.plugins.sfOauthPropelServerPlugin.lib.model.map
+ * @package	propel.generator.plugins.sfOauthPropelServerPlugin.lib.model.map
  */
 class SfoauthserverdeveloperTableMap extends TableMap
 {
@@ -30,8 +30,8 @@ class SfoauthserverdeveloperTableMap extends TableMap
 	 * Initialize the table attributes, columns and validators
 	 * Relations are not initialized by this method since they are lazy loaded
 	 *
-	 * @return     void
-	 * @throws     PropelException
+	 * @return	 void
+	 * @throws	 PropelException
 	 */
 	public function initialize()
 	{
@@ -55,8 +55,8 @@ class SfoauthserverdeveloperTableMap extends TableMap
 	 */
 	public function buildRelations()
 	{
-		$this->addRelation('Sfoauthserverconsumer', 'Sfoauthserverconsumer', RelationMap::MANY_TO_ONE, array('consumer_id' => 'id', ), null, null);
-		$this->addRelation('sfGuardUser', 'sfGuardUser', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
+		$this->addRelation('Sfoauthserverconsumer', 'Sfoauthserverconsumer', RelationMap::MANY_TO_ONE, array('consumer_id' => 'id',), null, null);
+		$this->addRelation('sfGuardUser', 'sfGuardUser', RelationMap::MANY_TO_ONE, array('user_id' => 'id',), null, null);
 	} // buildRelations()
 
 	/**
@@ -68,7 +68,7 @@ class SfoauthserverdeveloperTableMap extends TableMap
 	public function getBehaviors()
 	{
 		return array(
-			'symfony' => array('form' => 'true', 'filter' => 'true', ),
+			'symfony' => array('form' => 'true', 'filter' => 'true',),
 			'symfony_behaviors' => array(),
 		);
 	} // getBehaviors()

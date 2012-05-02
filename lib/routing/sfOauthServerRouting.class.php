@@ -9,33 +9,33 @@
 
 /**
  * sfOauthServerRouting configuration.
- * 
- * @package    sfOauthServerPlugin
+ *
+ * @package	sfOauthServerPlugin
  * @subpackage routing
- * @author     Matthias Krauser <matthias@krauser.eu>
+ * @author	 Matthias Krauser <matthias@krauser.eu>
  */
 class sfOauthServerRouting
 {
-  /**
-   * Listens to the routing.load_configuration event.
-   *
-   * @param sfEvent An sfEvent instance
-   * @static
-   */
-  static public function listenToRoutingLoadConfigurationEvent(sfEvent $event)
-  {
-    $r = $event->getSubject();
-    
-    /* @var $r sfPatternRouting */
+	/**
+	 * Listens to the routing.load_configuration event.
+	 *
+	 * @param sfEvent An sfEvent instance
+	 * @static
+	 */
+	static public function listenToRoutingLoadConfigurationEvent(sfEvent $event)
+	{
+		$r = $event->getSubject();
 
-    // preprend our routes
+		/* @var $r sfPatternRouting */
 
-    $r->prependRoute('sf_oauth_server_consumer_sfOauthAdmin', new sfPropelRouteCollection(array(
-        'name'        => 'sf_oauth_server_consumer_sfOauthAdmin',
-        'model'       => 'sfOauthServerConsumer',
-        'module'      => 'sfOauthAdmin',
-        'prefix_path' => '/oauth/admin',
-        'with_wildcard_routes' => true
-    )));
-  }
+		// preprend our routes
+
+		$r->prependRoute('sf_oauth_server_consumer_sfOauthAdmin', new sfPropelRouteCollection(array(
+																								   'name' => 'sf_oauth_server_consumer_sfOauthAdmin',
+																								   'model' => 'sfOauthServerConsumer',
+																								   'module' => 'sfOauthAdmin',
+																								   'prefix_path' => '/oauth/admin',
+																								   'with_wildcard_routes' => true
+																							  )));
+	}
 }

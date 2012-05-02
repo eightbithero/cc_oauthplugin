@@ -8,6 +8,10 @@ sfOauthAuthorize:
   url: /application/authorize
   param: {module: sfOauthApplication, action: authorize}
 
+sfOauthAuthorize:
+  url: /application/getCode
+  param: {module: sfOauthApplication, action: getCode}
+
 sfOauthDeAuthorize:
   url: /application/deauthorize
   param: {module: sfOauthApplication, action: deauthorize}

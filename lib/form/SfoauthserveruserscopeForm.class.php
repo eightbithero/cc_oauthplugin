@@ -3,13 +3,13 @@
 /**
  * Sfoauthserveruserscope form.
  *
- * @package    videopin
+ * @package	videopin
  * @subpackage form
- * @author     Your name here
+ * @author	 Your name here
  */
 class SfoauthserveruserscopeForm extends BaseSfoauthserveruserscopeForm
 {
-  public function configure()
-  {
-  }
+	public function configure()
+	{
+	}
 }

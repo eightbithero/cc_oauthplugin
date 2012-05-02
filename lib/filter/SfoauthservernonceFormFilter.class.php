@@ -3,13 +3,13 @@
 /**
  * Sfoauthservernonce filter form.
  *
- * @package    videopin
+ * @package	videopin
  * @subpackage filter
- * @author     Your name here
+ * @author	 Your name here
  */
 class SfoauthservernonceFormFilter extends BaseSfoauthservernonceFormFilter
 {
-  public function configure()
-  {
-  }
+	public function configure()
+	{
+	}
 }

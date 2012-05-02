@@ -3,13 +3,13 @@
 /**
  * Sfoauthserverdeveloper form.
  *
- * @package    videopin
+ * @package	videopin
  * @subpackage form
- * @author     Your name here
+ * @author	 Your name here
  */
 class SfoauthserverdeveloperForm extends BaseSfoauthserverdeveloperForm
 {
-  public function configure()
-  {
-  }
+	public function configure()
+	{
+	}
 }

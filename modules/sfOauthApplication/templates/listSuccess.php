@@ -2,8 +2,8 @@
 <?php
 foreach($applications as $application)
 {
-  echo $application->getConsumer()->getName().', its permissions :'.$application->getScope();
-  echo link_to('delete','application/delete?id='.$application->getId());
-  echo '<br />';
+	echo $application->getConsumer()->getName() . ', its permissions :' . $application->getScope();
+	echo link_to('delete', 'application/delete?id=' . $application->getId());
+	echo '<br />';
 }
 ?>

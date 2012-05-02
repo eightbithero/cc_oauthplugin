@@ -13,54 +13,56 @@
 
 class sfOauthFilter extends sfFilter
 {
-  /**
-   * Executes this filter.
-   *
-   * @param sfFilterChain $filterChain A sfFilterChain instance
-   */
-  public function execute($filterChain)
-  {
-	//load oauth configuration
-	$actionInstance = $this->context->getController()->getActionStack()->getLastEntry()->getActionInstance();
-	$sfoauth = new sfOauthServerBase($this->context,$actionInstance->getModuleName(),$actionInstance->getActionName());
-	
-	$request  =  $this->context->getRequest();
-	
-	if ($request->getParameter('oauth_version',NULL)=="1.0") // OAuth 1.0
+	/**
+	 * Executes this filter.
+	 *
+	 * @param sfFilterChain $filterChain A sfFilterChain instance
+	 */
+	public function execute($filterChain)
 	{
-	    $oauthServer = new sfoauthserver(new sfOAuthDataStore());
-	    $req = OAuthRequest::from_request();
-	    $oauthServer->verify_request($req);
+		//load oauth configuration
+		$actionInstance = $this->context->getController()->getActionStack()->getLastEntry()->getActionInstance();
+		$sfoauth = new sfOauthServerBase($this->context, $actionInstance->getModuleName(), $actionInstance->getActionName());
 
-		
-	 }
-	else if ($request->getParameter('oauth_token',NULL)!=NULL) // OAuth 2.0
-	{
-	      $oauth = new sfOAuth2PersistentServer(); #new sfOauth2Server();
-	      $oauth->verifyAccessToken();
+		$request = $this->context->getRequest();
+
+		if($request->getParameter('oauth_version', NULL) == "1.0") // OAuth 1.0
+		{
+			$oauthServer = new sfoauthserver(new sfOAuthDataStore());
+			$req = OAuthRequest::from_request();
+			$oauthServer->verify_request($req);
+
+
+		}
+		else {
+			if($request->getParameter('oauth_token', NULL) != NULL) // OAuth 2.0
+			{
+				$oauth = new sfOAuth2PersistentServer(); #new sfOauth2Server();
+				$oauth->verifyAccessToken();
+			}
+			else
+			{
+				throw new OAuthException('Unauthorized Access');
+			}
+		}
+
+
+		$token = $request->getParameter('access_token', $request->getParameter('oauth_token'));
+		$sfToken = new Sfoauthserveraccesstoken();
+		$sfToken->fromArray($oauth->getPublicAccessToken($token), BasePeer::TYPE_FIELDNAME);
+		$user = $sfToken->getUser();
+
+		$consumer = $sfToken->getConsumer();
+		$request->setParameter('sfGuardUser', $user); // save this user in a parameter 'user'
+		$request->setParameter('sfOauthConsumer', $consumer); // save consumer in a parameter 'consumer'
+		$credential = $sfoauth->getOauthCredential();
+
+		if(null !== $credential && !$sfToken->hasCredential($credential)) // chek if the consumer is allowed to access to this action
+		{
+			throw new OAuthException('Unauthorized Access');
+		}
+
+		// this aplpication has access, continue
+		$filterChain->execute();
 	}
-	else
-	{
-		throw new OAuthException('Unauthorized Access');
-	}
-
-	
-	$token = $request->getParameter('access_token',$request->getParameter('oauth_token'));
-	$sfToken = new Sfoauthserveraccesstoken();
-	$sfToken->fromArray($oauth->getPublicAccessToken($token));
-			 # sfOauthServerAccessTokenQuery::create()->findOneByToken($token);
-	$user = $sfToken->getUser(); // Select user concerned
-
-	$consumer = $sfToken->getConsumer();
-	#$consumer->increaseNumberQuery();
-	$request->setParameter('sfGuardUser',$user); // save this user in a parameter 'user'
-	$request->setParameter('sfOauthConsumer',$consumer); // save consumer in a parameter 'consumer'
-    $credential = $sfoauth->getOauthCredential();
-
-    if (null !== $credential && !$sfToken->hasCredential($credential)) // chek if the consumer is allowed to access to this action
-		throw new OAuthException('Unauthorized Access');
-
-    // this aplpication has access, continue
-    $filterChain->execute();
-  }  
 }
