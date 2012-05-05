@@ -1,7 +1,7 @@
 propel:
   _attributes:      { package: plugins.sfOauthPropelServerPlugin.lib.model }
 
-  sfOauthServerConsumer:
+  sfoauthserverconsumer:
     _propel_behaviors:
       timestampable: ~
     consumer_key: {type: VARCHAR, size: '40', required: true, unique:true}
@@ -16,12 +16,12 @@ propel:
 #    relations:
 #      Developers: { class: sfGuardUser, refClass: sfOauthServerDeveloper, local: consumer_id, foreign: user_id, foreignAlias: Applications}
 
-  sfOauthServerDeveloper:
-    consumer_id: {type: INTEGER, required: true, foreignTable: sfOauthServerConsumer, foreignReference: id}
+  sfoauthserverdeveloper:
+    consumer_id: {type: INTEGER, required: true, foreignTable: sfoauthserverconsumer, foreignReference: id}
     user_id: {type: INTEGER, required: true, foreignTable: sf_guard_user, foreignReference: id}
     admin: {type: boolean, default: false}
 
-  sfOauthServerRequestToken:
+  sfoauthserverrequesttoken:
     _propel_behaviors:
       symfony:
         form: false
@@ -29,14 +29,14 @@ propel:
       timestampable: { update_column: created_at }
     token: {type: VARCHAR, size: '40', required: true, unique: true}
     secret: {type: VARCHAR, size: '40', required: false}
-    consumer_id: {type: INTEGER, required: true, foreignTable: sfOauthServerConsumer, foreignReference: id}
+    consumer_id: {type: INTEGER, required: true, foreignTable: sfoauthserverconsumer, foreignReference: id}
     user_id: {type: INTEGER, foreignTable: sf_guard_user, foreignReference: id}
     callback: {type: VARCHAR, size: '256' }
     scope: {type : VARCHAR, size: '256', required: false}
     expires: { type: INTEGER}
     protocole: {type: INTEGER, default: 1 }
 
-  sfOauthServerAccessToken:
+  sfoauthserveraccesstoken:
     _propel_behaviors:
       symfony:
         form: false
@@ -44,14 +44,14 @@ propel:
       timestampable: { update_column: created_at }
     token: {type: VARCHAR, size: '40', required: true, unique:true}
     secret: {type: VARCHAR, size: '40', required: false}
-    consumer_id: {type: INTEGER, required: true, foreignTable: sfOauthServerConsumer, foreignReference: id}
+    consumer_id: {type: INTEGER, required: true, foreignTable: sfoauthserverconsumer, foreignReference: id}
     user_id: {type: INTEGER, required: false, foreignTable: sf_guard_user, foreignReference: id}
     scope: {type: VARCHAR, size: '256', required: false}
     expires: { type: INTEGER}
     protocole: {type: INTEGER, default: 1 }
 
    # sfOauthServerNonce protection againts hakers
-  sfOauthServerNonce:
+  sfoauthservernonce:
     _propel_behaviors:
       symfony:
         form: false
@@ -59,9 +59,9 @@ propel:
       timestampable: { update_column: created_at }
     nonce: {type: VARCHAR, size: '40', required: true, unique:true}
 
-  sfOauthServerUserScope:
+  sfoauthserveruserscope:
     user_id: {type: INTEGER, required: true, foreignTable: sf_guard_user, foreignReference: id}
-    consumer_id: {type: INTEGER, required: true, foreignTable: sfOauthServerConsumer, foreignReference: id}
+    consumer_id: {type: INTEGER, required: true, foreignTable: sfoauthserverconsumer, foreignReference: id}
     scope: {type: VARCHAR, size: '256', required: false}
 
 
